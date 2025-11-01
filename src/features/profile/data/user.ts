@@ -15,7 +15,7 @@ export const USER: User = {
   ],
   address: "Ahmedabad, India",
   email: "dnJhaHVsLmVuZ2luZWVyQGdtYWlsLmNvbQ==", // base64 encoded
-  website: "https://chanhdai.com",
+  website: " ",
   jobTitle: "Developer",
   jobs: [
     {

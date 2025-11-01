@@ -15,7 +15,7 @@ export default function FollowingEyes() {
   const eyeGroupRef = useRef<SVGGElement>(null);
 
   const [eyeTransform, setEyeTransform] = useState('translate(0px, 0px)');
-  const [bodyTransform, setBodyTransform] = useState('translate(-50%, 0)');
+  const [bodyTransform, setBodyTransform] = useState('none');
 
   // Constants
   const LEFT_EYE: EyePosition = { x: 285, y: 180 };
@@ -23,9 +23,9 @@ export default function FollowingEyes() {
   const CENTER_X = 260;
   const CENTER_Y = 200;
   const MAX_PUPIL_DISTANCE = 12;
-  const MAX_EYE_MOVE = 4;
-  const MAX_BODY_TILT = 2;
-  const MAX_BODY_ROTATE = 3;
+  const MAX_EYE_MOVE = 8;
+  const MAX_BODY_TILT = 5;
+  const MAX_BODY_ROTATE = 8;
 
   const updatePupil = (
     pupil: SVGCircleElement,
@@ -53,18 +53,6 @@ export default function FollowingEyes() {
       if (!svgRef.current || !leftPupilRef.current || !rightPupilRef.current) return;
 
       const svgRect = svgRef.current.getBoundingClientRect();
-      
-      // Check if mouse is reasonably close to the character
-      const distanceToChar = Math.sqrt(
-        Math.pow(e.clientX - (svgRect.left + svgRect.width / 2), 2) +
-        Math.pow(e.clientY - (svgRect.top + svgRect.height / 2), 2)
-      );
-
-      // Only animate if mouse is within reasonable range (e.g., 800px)
-      if (distanceToChar > 800) {
-        return;
-      }
-
       const scaleX = 520 / svgRect.width;
       const scaleY = 360 / svgRect.height;
       const mouseX = (e.clientX - svgRect.left) * scaleX;
@@ -75,25 +63,22 @@ export default function FollowingEyes() {
       const dy = mouseY - CENTER_Y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      // Prevent division by zero
-      if (distance === 0) return;
-
-      // Move the whole eye group (reduced movement)
+      // Move the whole eye group
       const eyeMoveX = (dx / distance) * MAX_EYE_MOVE;
       const eyeMoveY = (dy / distance) * MAX_EYE_MOVE;
       setEyeTransform(`translate(${eyeMoveX}px, ${eyeMoveY}px)`);
 
-      // Subtle tilt (reduced movement)
+      // Tilt the body
       const tiltX = (dx / svgRect.width) * MAX_BODY_TILT;
       const tiltY = (dy / svgRect.height) * MAX_BODY_TILT;
       const rotate = (dx / svgRect.width) * MAX_BODY_ROTATE;
 
       setBodyTransform(`
-        translate(-50%, 0)
         perspective(1000px) 
         rotateY(${tiltX}deg) 
         rotateX(${-tiltY}deg)
         rotateZ(${rotate}deg)
+        scale(1.02)
       `);
 
       // Update pupils
@@ -102,7 +87,7 @@ export default function FollowingEyes() {
     };
 
     const handleMouseLeave = () => {
-      setBodyTransform('translate(-50%, 0)');
+      setBodyTransform('none');
       setEyeTransform('translate(0px, 0px)');
     };
 
@@ -116,20 +101,16 @@ export default function FollowingEyes() {
   }, []);
 
   return (
-    <div className="relative h-12 w-16 overflow-visible">
-      {/* Character container - positioned to peek from header */}
+    <div className="flex items-center justify-center min-h-screen bg-transparent overflow-hidden">
       <div
         ref={containerRef}
-        className="absolute -bottom-1 left-1/2 transition-transform duration-100 ease-out"
-        style={{ 
-          transform: bodyTransform,
-          transformOrigin: 'center top'
-        }}
+        className="relative w-[200px] h-[80px] transition-transform duration-100 ease-out"
+        style={{ transform: bodyTransform }}
       >
         <svg
           ref={svgRef}
-          viewBox="100 80 280 160"
-          className="h-14 w-auto"
+          viewBox="0 0 520 360"
+          className="w-full h-full"
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Face */}

@@ -9,7 +9,7 @@ export default function HireMeButton() {
     }
 
   return (
-    <div className={cn("border-l px-1 flex items-center")}>
+    <div className={cn("border-l pl-3")}>
     <button className={cn("hire-me-btn text-[14px] text-blue-600 hover:text-zinc-500 hover:cursor-pointer")} onClick={()=>OpenEmail() }>
         Hire Me
     </button>

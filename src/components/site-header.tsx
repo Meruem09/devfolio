@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { SiteHeaderMark } from "./site-header-mark";
 import { SiteHeaderWrapper } from "./site-header-wrapper";
 import { ToggleTheme } from "./toggle-theme";
+import FollowingEyes from "./animation/eye-follow";
 
 const BrandContextMenu = dynamic(() =>
   import("@/components/brand-context-menu").then((mod) => mod.BrandContextMenu)
@@ -40,8 +41,7 @@ export function SiteHeader() {
           </Link>
         </BrandContextMenu>
 
-        <div className="flex-1" />
-
+        <div className="flex-1"/>        
         <DesktopNav items={MAIN_NAV} />
 
         <div className="flex items-center gap-2">

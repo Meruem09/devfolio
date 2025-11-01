@@ -33,9 +33,6 @@ export default function Page() {
           <ProfileHeader />
           <Separator />
 
-          <Overview />
-          <Separator />
-
           <About />
           <Separator />
 

@@ -41,7 +41,8 @@ export function SiteHeader() {
           </Link>
         </BrandContextMenu>
 
-        <div className="flex-1"/>        
+        <div className="flex-1"/>
+       
         <DesktopNav items={MAIN_NAV} />
 
         <div className="flex items-center gap-2">
